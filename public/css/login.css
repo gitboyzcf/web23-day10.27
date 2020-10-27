@@ -1,0 +1,33 @@
+body,
+html {
+  width: 100%;
+  height: 100%;
+  background-color: #00b4ef;
+  overflow: hidden;
+}
+.login_con {
+  margin-top: 50px;
+}
+.login_con .login {
+  width: 100%;
+  background-color: #fff;
+  border-radius: 10px;
+}
+.login_con .login h3 {
+  padding: 40px 0;
+  font-weight: 700;
+  border-bottom: 1px solid #ccc;
+}
+.login_con .login form {
+  padding: 10px 50px 50px;
+}
+.login_con .login form input {
+  border-radius: 40px;
+}
+.login_con .login form .btn {
+  border-radius: 40px;
+  background-color: #00b4ef;
+  width: 100%;
+  color: #fff;
+  outline: none;
+}

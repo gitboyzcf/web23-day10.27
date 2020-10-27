@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+</head>
+
+<body>
+    <h2 class="red">首页</h2>
+    <div class="container">
+        <h4>
+            <a href="/adduser" class="btn btn-primary">添加用户</a>
+        </h4>
+
+        <table class="table table-bordered">
+            <tr>
+                <th>用户名</th>
+                <th>年龄</th>
+                <th>性别</th>
+                <th>地址</th>
+                <th>手机号</th>
+                <th>邮箱</th>
+                <th>操作</th>
+            </tr>
+            <% for(var i=0;i<lists.length;i++){ %>
+            <tr>
+                <td><%=lists[i].username%></td>
+                <td><%=lists[i].age%></td>
+                <td><%=lists[i].sex%></td>
+                <td><%=lists[i].address%></td>
+                <td><%=lists[i].phone%></td>
+                <td><%=lists[i].email%></td>
+                <td>
+                    <a href="" class="btn btn-danger">删除</a>
+                    <a href="" class="btn btn-success">修改</a>
+                </td>
+            </tr>
+            <% } %>
+        </table>
+
+    </div>
+
+</body>
+
+</html>

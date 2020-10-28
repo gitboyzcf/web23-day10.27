@@ -8,26 +8,39 @@ html {
 .login_con {
   margin-top: 50px;
 }
-.login_con .login {
-  width: 100%;
+.login_con .col-sm-6 {
   background-color: #fff;
+  border-radius: 20px;
+}
+.login_con .nav li a {
+  font-size: 20px;
+  font-weight: 700;
+}
+.login_con .login,
+.login_con .register {
+  width: 100%;
   border-radius: 10px;
 }
-.login_con .login h3 {
+.login_con .login h3,
+.login_con .register h3 {
   padding: 40px 0;
   font-weight: 700;
   border-bottom: 1px solid #ccc;
 }
-.login_con .login form {
+.login_con .login form,
+.login_con .register form {
   padding: 10px 50px 50px;
 }
-.login_con .login form input {
+.login_con .login form input,
+.login_con .register form input {
   border-radius: 40px;
 }
-.login_con .login form .btn {
+.login_con .login form .btn,
+.login_con .register form .btn {
   border-radius: 40px;
   background-color: #00b4ef;
   width: 100%;
   color: #fff;
   outline: none;
+  margin-bottom: 10px;
 }

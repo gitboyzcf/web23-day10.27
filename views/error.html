@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+</head>
+<body>
+    <p>您的操作有误,<span>5</span>秒后返回登录页....</p>
+    <script>
+        let oSpan = document.querySelector("span");
+        
+        oSpan.timer = setInterval(() => {
+            let num = --oSpan.innerText;
+            if(num <= 0){
+                clearInterval(oSpan.timer);
+                location.href = "http://192.172.1.33:3000";
+            }else{
+                oSpan.innerText = num;
+            }
+        }, 1000);
+        console.log(oSpan);
+    </script>
+</body>
+</html>

@@ -37,20 +37,20 @@ a {
 .goods_operation {
   position: relative;
 }
-.goods_operation .nav-pills li {
-  margin-top: -1px !important;
-}
 .goods_operation .nav-pills li a {
   border-radius: 0;
-  border: 1px solid #ccc;
 }
-.goods_operation .nav-pills li:nth-child(1) {
+.goods_operation .nav-pills li:nth-child(1),
+.goods_operation .nav-pills li:nth-child(4) {
   color: #fff;
-  background-color: #337ab7;
+  background-color: #123a5eb4;
   padding: 10px 15px;
   border-radius: 4px 4px 0 0;
   margin-bottom: -2px;
   z-index: 10;
+}
+.goods_operation .nav-pills li:nth-child(4) {
+  margin-top: 20px!important;
 }
 .goods_operation .goodsListTab thead th:nth-child(3) {
   width: 25%;

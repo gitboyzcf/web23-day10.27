@@ -4,35 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>商品管理</title>
-    <link rel="stylesheet" href="./css/bootstrap.css">
-    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/index.css">
 </head>
 <body>
-    <div class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a href="#" class="navbar-brand">LOGO</a>
-            </div>
-
-            <ul class="nav navbar-nav">
-                <li><a href="#">商品管理</a></li>
-                <li><a href="#">系统设置</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">欢迎您,<span><%=userName %></span></a></li>
-                <li><a href="http://192.172.1.33:3000/signOut">安全退出</a></li>
-            </ul>
-        </div>
-
-    </div>
+    <%- include("./component/header") %>
     <div class="container-fluid goods_operation">
         <div class="row">
             <div class="col-sm-3">
                 <ul class="nav nav-pills nav-stacked" role="tablist">
                     <li><span>商品管理</span></li>
-                    <li role="presentation"><a href="#goods_list" aria-controls="home" role="tab" data-toggle="tab">商品列表</a></li>
+                    <li role="presentation" class="active"><a href="#goods_list" aria-controls="home" role="tab" data-toggle="tab">商品列表</a></li>
                     <li role="presentation"><a href="#add_goods" aria-controls="profile" role="tab" data-toggle="tab">增加商品</a></li>
-                    <li role="presentation" class="active"><a href="#goods_type" aria-controls="messages" role="tab" data-toggle="tab">分类商品</a></li>
+                    <li><span>分类管理</span></li>
                     <li role="presentation"><a href="#goods_type_list" aria-controls="settings" role="tab" data-toggle="tab">商品分类列表</a></li>
                     <li role="presentation"><a href="#add_goods_type" aria-controls="settings" role="tab" data-toggle="tab">增加商品分类</a></li>
                 </ul>
@@ -47,36 +31,11 @@
                     
                     <!-- 信息 -->
                     <div class="tab-content">
-                          <div role="tabpanel" class="tab-pane" id="goods_list">1</div>
-                          <div role="tabpanel" class="tab-pane" id="add_goods">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">增加商品</div>
-                                <div class="panel-body">
-                                    <form action="/addGoods" method="POST" class="form-inline">
-                                        <div class="input-group">
-                                            <label for="addGoodsName">商品名称:</label>
-                                            <input type="text" id="addGoodsName" name="name"><br>
-                                            <label for="addGoodsImg">商品图片:</label>
-                                            <input type="file" id="addGoodsImg" name="img" style="display: inline-block;"><br>
-                                            <label for="addGoodsPrice">商品价格:</label>
-                                            <input type="text" id="addGoodsPrice" name="price"><br>
-                                            <label for="addGoodsPostage">商品邮费:</label>
-                                            <input type="text" id="addGoodsPostage" name="postage"><br>
-                                            <label for="addGoodsDescribe">商品描述:</label>
-                                            <textarea name="describe" id="addGoodsDescribe" style="width: 430px;height: 110px; resize: none;"></textarea>
-                                        </div><br>
-                                        <div class="input-group">
-                                            <input type="submit" class="btn" value="提交">
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                          </div>
-                          <div role="tabpanel" class="tab-pane active" id="goods_type">
+                          <div role="tabpanel" class="tab-pane active" id="goods_list">
                             <div class="panel panel-default">
                                 <div class="panel-heading">搜索</div>
                                 <div class="panel-body">
-                                    <form action="/findGoods" method="GET" class="form-inline">
+                                    <form action="/admin/findGoods" method="GET" class="form-inline">
                                         <div class="form-group">
                                             <label for="goodsName">名称</label>
                                             <input type="text" id="goodsName" name="goodsName" placeholder="请输入名称" class="form-control">
@@ -105,16 +64,40 @@
                                         <td><%= goods[i].price %>元</td>
                                         <td><%= goods[i].postage %>元</td>
                                         <td>
-                                            <a href="/updateGoods?id=<%= goods[i]._id %>" class="btn btn-primary" class="update">修改</a>
-                                            <a href="/deleteGoods?id=<%= goods[i]._id %>" class="btn btn-danger" class="delete">删除</a>
+                                            <a href="/admin/updateGoods?id=<%= goods[i]._id %>" class="btn btn-primary" class="update">修改</a>
+                                            <a href="/admin/deleteGoods?id=<%= goods[i]._id %>" class="btn btn-danger" class="delete">删除</a>
                                         </td>
                                     </tr>
                                     <% } %>
                                 </tbody>
                             </table>
                           </div>
-                          <div role="tabpanel" class="tab-pane" id="goods_type_list">4</div>
-                          <div role="tabpanel" class="tab-pane" id="add_goods_type">5</div>
+                          <div role="tabpanel" class="tab-pane" id="add_goods">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">增加商品</div>
+                                <div class="panel-body">
+                                    <form action="/admin/addGoods" method="POST" class="form-inline">
+                                        <div class="input-group">
+                                            <label for="addGoodsName">商品名称:</label>
+                                            <input type="text" id="addGoodsName" name="name"><br>
+                                            <label for="addGoodsImg">商品图片:</label>
+                                            <input type="file" id="addGoodsImg" name="img" style="display: inline-block;"><br>
+                                            <label for="addGoodsPrice">商品价格:</label>
+                                            <input type="text" id="addGoodsPrice" name="price"><br>
+                                            <label for="addGoodsPostage">商品邮费:</label>
+                                            <input type="text" id="addGoodsPostage" name="postage"><br>
+                                            <label for="addGoodsDescribe">商品描述:</label>
+                                            <textarea name="describe" id="addGoodsDescribe" style="width: 430px;height: 110px; resize: none;"></textarea>
+                                        </div><br>
+                                        <div class="input-group">
+                                            <input type="submit" class="btn" value="提交">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                          </div>
+                          <div role="tabpanel" class="tab-pane" id="goods_type_list">3</div>
+                          <div role="tabpanel" class="tab-pane" id="add_goods_type">4</div>
                     </div>
                 </div>
             </div>
@@ -124,7 +107,7 @@
         
     </div>
 
-    <script src="./js/jquery-3.4.1.js"></script>
-    <script src="./js/bootstrap.js"></script>
+    <script src="/js/jquery-3.4.1.js"></script>
+    <script src="/js/bootstrap.js"></script>
 </body>
 </html>

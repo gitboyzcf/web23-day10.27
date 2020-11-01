@@ -10,7 +10,10 @@ const addGoods = new mongoose.Schema({
     img:{
         type:String
     }, //商品图片
-    price:String,  //商品价格
+    price:{
+        type:String,
+        required:[true,"价格不能为空"]
+    },  //商品价格
     postage:String, //商品邮费
     describe:String //商品描述
 });

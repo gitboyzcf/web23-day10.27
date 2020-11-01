@@ -1,14 +1,20 @@
 let express = require("express");
-let path = require("path");
-let querystring = require("querystring");
 
-let app = express();
 let router = express.Router();
 
+// 商品集合模块
 let goods = require("../model/goods");
-// 登录模块
+// 用户集合模块
 let uLogin = require("../model/login");
 
+
+// 该接口共ajax使用---
+router.get("/getUser",async (req,res)=>{
+    let result = await uLogin.find({"username":req.query.username});
+    if(result){
+        res.status(200).send(result);
+    }
+})
 
 // 配置路由
 router.get("/",function(req,res){
@@ -16,32 +22,34 @@ router.get("/",function(req,res){
 })
 
 
-router.post("/login",function(req,res){
-    uLogin.find(req.body).then((result)=>{
-        if(result.length == 0){
-            console.log("您的用户不存在，请重新输入");
-            res.redirect("/admin");
-        }else{
-            console.log("登录成功");
-            // 存储该用户
-            app.locals.userId=result[0]._id; // 定义可以应用整个生命周期中使用的变量
-            app.locals.userName = result[0].username;
-            res.redirect("/admin/index");
-        }
-    })
+router.post("/login",async (req,res)=>{
+    let result = await uLogin.find(req.body);
+    console.log(result);
+    if(result == 0){
+        res.send('<script>alert("该用户不存在,请先注册"); location.href = "/admin"</script>')
+    }else{
+        console.log("登录成功");
+        // 存储该用户
+        req.app.locals.userId=result[0]._id; // 定义可以应用整个生命周期中使用的变量
+        req.app.locals.userName = result[0].username;
+        console.log(req.app.locals.userName)
+        
+        res.redirect("/admin/index?page=1&size=3");
+    }
+
 })
 
 // 注册
 router.post("/user_register",async (req,res)=>{
     let userObj = req.body;
+    console.log(userObj);
     let result = await uLogin.create(userObj);
-    console.log(result);
-    res.redirect("/admin/login");
+    res.redirect("/admin");
 });
 
 // 拦截---------------
 router.use(function(req,res,next){
-    let userId = app.locals.userId;
+    let userId = req.app.locals.userId;
     if(!userId){
         res.render("login");
     }else{
@@ -51,31 +59,15 @@ router.use(function(req,res,next){
 
 // 配置路由
 // 首页
-router.get("/index",async (req,res)=>{
-    console.log(app.locals.userName);
-    let result = await goods.find();
-    if(result){
-        res.render("index",{goods:result,user:app.locals.userName});//不能放另一个模块
-    }
-});
+router.get("/index",require("./goods_router/goods_list.js"));
 
 
 // 添加商品
-router.post("/addGoods",require("./admin_router/goodsadd"));
+router.post("/addGoods",require("./goods_router/goodsadd"));
 
 
 // 修改商品
-router.get("/updateGoods",async (req,res)=>{
-    console.log(req.query.id);
-    let result = await goods.find({"_id":req.query.id});
-    console.log(result)
-    if(result){
-        res.render("update",{
-            u_goods:result[0],
-            user:app.locals.userName
-        });
-    }
-});
+router.get("/updateGoods",require("./goods_router/update_goods"));
 // 提交修改操作
 router.post("/goodsUpdate",async (req,res)=>{
     let result = await goods.updateOne({"_id":req.query.id},req.body);
@@ -87,33 +79,49 @@ router.post("/goodsUpdate",async (req,res)=>{
 
 
 // 删除商品
-router.get("/deleteGoods",require("./admin_router/goodsdel"));
+router.get("/deleteGoods",require("./goods_router/goodsdel"));
 
 // 查找商品
-router.get("/findGoods",async (req,res)=>{
-    let goodsName = path.basename(req.url).split("?")[1].split("=")[1];
-    // 查询的内容是否为空
-    if(goodsName){
-        // 解码
-        goodsName = querystring.unescape(goodsName);
-        let result = await goods.find({name:goodsName})
-        console.log(result);
-        if(result){
-            res.render("index",{goods:result,user:app.locals.userName});
-        }
-    }else{
-        console.log("查询内容不能为空")
-        res.redirect("/admin/index");
-    }
-});
+router.get("/searchIndex",require("./goods_router/searchGoods"));
 
 // 退出
 router.get("/signOut",(req,res)=>{
     // 防止下次登录还在线
-    app.locals.userId = null;
-    app.locals.userName = null;
+    req.app.locals.userId = null;
+    req.app.locals.userName = null;
     res.redirect("/admin");
 });
+
+
+// 对用户的操作=============
+// 添加用户
+router.post("/addUser",require("./admin_router/add_user"));
+
+// 删除用户
+router.get("/deleteUser",require("./admin_router/del_user"));
+
+// 修改用户
+router.get("/updateUser",require("./admin_router/update_user"));
+// 提交修改
+router.post("/userUpdate",async (req,res)=>{
+    console.log(req.body);
+    console.log(req.app.locals.userName);
+    // 当修改时先判断是否修改自己的账户 是就修改，否就不修改，只能修改自己的信息
+    let uname = await uLogin.findOne({"_id":req.query.id});
+    if(req.app.locals.userName == uname.username){
+        let result = await uLogin.updateOne({"_id":req.query.id},{
+            username:req.body.username,
+            password:req.body.password
+        });
+        req.app.locals.userName = req.body.username;
+        res.redirect("/admin/index");
+    }else{
+        res.send("<script>alert('只能修改已登录的用户');location.href='/admin/index'</script>");
+    }
+})
+// 搜索用户
+router.get("/finduser",require("./admin_router/searchUser"));
+
 
 // 暴露
 module.exports = router;

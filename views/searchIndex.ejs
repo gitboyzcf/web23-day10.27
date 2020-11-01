@@ -74,6 +74,18 @@
                                     <% } %>
                                 </tbody>
                             </table>
+                            <div class="paging">
+                                <ul class="pagination">
+                                    <li class="disabled"><a href="#">共有<span><%= total %></span>条数据</a></li>
+                                    <li><a href="/admin/searchIndex?page=1">首页</a></li>
+                                    <li class="<%= page==1?'disabled':'' %>"><a href="/admin/searchIndex?page=<%=page-1%>">上一页</a></li>
+                                    <% for(let i=1; i<=totalPage; i++){ %>
+                                    <li class="<%= page==i?'active':'' %>"><a href="/admin/searchIndex?page=<%=i%>"><%= i %></a></li>
+                                    <% } %>
+                                    <li class="<%= page==totalPage?'disabled':'' %>"><a href="/admin/searchIndex?page=<%=page>=totalPage?totalPage:page+1%>">下一页</a></li>
+                                    <li><a href="/admin/searchIndex?page=<%=totalPage%>">尾页</a></li>
+                                  </ul>
+                            </div>
                           </div>
                           <!-- 增加用户 -->
                           <div role="tabpanel" class="tab-pane" id="add_user">
@@ -102,7 +114,7 @@
                                     <form action="/admin/searchIndex" method="GET" class="form-inline">
                                         <div class="form-group">
                                             <label for="goodsName">名称</label>
-                                            <input type="text" id="goodsName" name="goodsName" placeholder="请输入名称" class="form-control">
+                                            <input type="text" id="goodsName" name="goodsName" placeholder="请输入名称" class="form-control" value="<%= searchStr?searchStr:'' %>">
                                         </div>
                                         <input type="submit" class="btn" value="开始搜索">
                                     </form>
@@ -128,7 +140,7 @@
                                         <td><%= goods[i].price %>元</td>
                                         <td><%= goods[i].postage %>元</td>
                                         <td>
-                                            <a href="/admin/updateGoods?id=<%= goods[i]._id %>" class="btn btn-primary">修改</a>
+                                            <a href="/admin/updateGoods?id=<%= goods[i]._id %>" class="btn btn-primary" class="update">修改</a>
                                             <a href="javascript:void(0);" class="btn btn-danger delGoods" data-toggle="modal" data-target="#myModal" data-goodsId="<%= goods[i]._id%>">删除</a>
                                         </td>
                                     </tr>
@@ -138,13 +150,13 @@
                             <div class="paging">
                                 <ul class="pagination">
                                     <li class="disabled"><a href="#">共有<span><%= total %></span>条数据</a></li>
-                                    <li><a href="/admin/index?page=1">首页</a></li>
-                                    <li class="<%= page==1?'disabled':'' %>"><a href="/admin/index?page=<%=page-1%>">上一页</a></li>
+                                    <li><a href="/admin/searchIndex?page=1">首页</a></li>
+                                    <li class="<%= page==1?'disabled':'' %>"><a href="/admin/searchIndex?page=<%=page-1%>">上一页</a></li>
                                     <% for(let i=1; i<=totalPage; i++){ %>
-                                    <li class="<%= page==i?'active':'' %>"><a href="/admin/index?page=<%=i%>"><%= i %></a></li>
+                                    <li class="<%= page==i?'active':'' %>"><a href="/admin/searchIndex?page=<%=i%>"><%= i %></a></li>
                                     <% } %>
-                                    <li class="<%= page==totalPage?'disabled':'' %>"><a href="/admin/index?page=<%=page>=totalPage?totalPage:page+1%>">下一页</a></li>
-                                    <li><a href="/admin/index?page=<%=totalPage%>">尾页</a></li>
+                                    <li class="<%= page==totalPage?'disabled':'' %>"><a href="/admin/searchIndex?page=<%=page>=totalPage?totalPage:page+1%>">下一页</a></li>
+                                    <li><a href="/admin/searchIndex?page=<%=totalPage%>">尾页</a></li>
                                   </ul>
                             </div>
                           </div>
@@ -155,7 +167,7 @@
                                     <form action="/admin/addGoods" method="POST" class="form-inline">
                                         <div class="input-group">
                                             <label for="addGoodsName">商品名称:</label>
-                                            <input type="text" id="addGoodsName" name="name" required><br>
+                                            <input type="text" id="addGoodsName" name="name"><br>
                                             <label for="cate_id">商品类别:</label>
                                             <select name="cate_id" id="cate_id">
                                                 <option value="1">服装</option>
@@ -166,7 +178,7 @@
                                             <label for="addGoodsImg">商品图片:</label>
                                             <input type="file" id="addGoodsImg" name="img" style="display: inline-block;"><br>
                                             <label for="addGoodsPrice">商品价格:</label>
-                                            <input type="text" id="addGoodsPrice" name="price" required><br>
+                                            <input type="text" id="addGoodsPrice" name="price"><br>
                                             <label for="addGoodsPostage">商品邮费:</label>
                                             <input type="text" id="addGoodsPostage" name="postage"><br>
                                             <label for="addGoodsDescribe">商品描述:</label>
@@ -179,48 +191,49 @@
                                 </div>
                             </div>
                           </div>
-                            <!-- 模态框警告信息的弹出 商品-->
-                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <form action="/admin/deleteGoods" method="GET">
-                                          <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            <h4 class="modal-title" id="myModalLabel">提示</h4>
-                                          </div>
-                                          <div class="modal-body">
-                                            您确定要删除吗？
-                                            <input type="hidden" class="delTemp" name="id">
-                                          </div>
-                                          <div class="modal-footer">
-                                              <button type="submit" class="btn btn-default">确定</button>
-                                            <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
-                                          </div>
-                                        </form>
-                                    </div>
+
+                          <!-- 模态框警告信息的弹出 -->
+                          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <form action="/admin/deleteGoods" method="GET">
+                                      <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel">提示</h4>
+                                      </div>
+                                      <div class="modal-body">
+                                        您确定要删除吗？
+                                        <input type="hidden" class="delTemp" name="id">
+                                      </div>
+                                      <div class="modal-footer">
+                                          <button type="submit" class="btn btn-default">确定</button>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+                                      </div>
+                                    </form>
                                 </div>
-                              </div>
-                            <!-- 模态框警告信息的弹出 用户-->
-                            <div class="modal fade" id="myModaluser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <form action="/admin/deleteUser" method="GET">
-                                          <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            <h4 class="modal-title" id="myModalLabel">提示</h4>
-                                          </div>
-                                          <div class="modal-body">
-                                            您确定要删除吗？
-                                            <input type="hidden" class="delTemp" name="userId"">
-                                          </div>
-                                          <div class="modal-footer">
-                                              <button type="submit" class="btn btn-default">确定</button>
-                                            <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
-                                          </div>
-                                        </form>
-                                    </div>
+                            </div>
+                          </div>
+                          <!-- 模态框警告信息的弹出 用户-->
+                          <div class="modal fade" id="myModaluser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <form action="/admin/deleteUser" method="GET">
+                                      <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel">提示</h4>
+                                      </div>
+                                      <div class="modal-body">
+                                        您确定要删除吗？
+                                        <input type="hidden" class="delTemp" name="userId"">
+                                      </div>
+                                      <div class="modal-footer">
+                                          <button type="submit" class="btn btn-default">确定</button>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+                                      </div>
+                                    </form>
                                 </div>
-                              </div>
+                            </div>
+                          </div>
 
                           <div role="tabpanel" class="tab-pane" id="goods_type_list">3</div>
                           <div role="tabpanel" class="tab-pane" id="add_goods_type">4</div>

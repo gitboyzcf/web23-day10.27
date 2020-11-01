@@ -41,7 +41,8 @@ a {
   border-radius: 0;
 }
 .goods_operation .nav-pills li:nth-child(1),
-.goods_operation .nav-pills li:nth-child(4) {
+.goods_operation .nav-pills li:nth-child(4),
+.goods_operation .nav-pills li:nth-child(7) {
   color: #fff;
   background-color: #123a5eb4;
   padding: 10px 15px;
@@ -49,7 +50,8 @@ a {
   margin-bottom: -2px;
   z-index: 10;
 }
-.goods_operation .nav-pills li:nth-child(4) {
+.goods_operation .nav-pills li:nth-child(4),
+.goods_operation .nav-pills li:nth-child(7) {
   margin-top: 20px!important;
 }
 .goods_operation .goodsListTab thead th:nth-child(3) {

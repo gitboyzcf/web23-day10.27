@@ -19,10 +19,52 @@
             <div class="col-sm-12">
                 <form action="/admin/goodsUpdate?id=<%=u_goods._id %>" method="POST" class="form-inline">
                     <div class="input-group">
+                        <ul>
+                            <li>
+                                <label for="addGoodsName">商品名称:</label>
+                                <input type="text" id="addGoodsName" name="name" required value="<%=u_goods.name %>">
+                            </li>
+                            <li>
+                                <label for="cate_id">商品类别:</label>
+                                <select name="cate_id" id="cate_id">
+                                    <option value="1" selected="<%= u_goods.cate_id==1? 'selected':'' %>">服装</option>
+                                    <option value="2" selected="<%= u_goods.cate_id==2? 'selected':'' %>">家电</option>
+                                    <option value="3" selected="<%= u_goods.cate_id==3? 'selected':'' %>">食品</option>
+                                    <option value="4" selected="<%= u_goods.cate_id==4? 'selected':'' %>">学习用品</option>
+                                </select>
+                            </li>
+                            <li>
+                                <label for="addGoodsImg">商品图片:</label>
+                                <input type="file" id="addGoodsImg" name="img" style="display: inline-block;">
+                            </li>
+                            <li>
+                                <img src="<%= u_goods.img %>" alt=""  style="width:100px; margin-left: 65px;" id="thumb">
+                            </li>
+                            <li>
+                                <label for="addGoodsPrice">商品价格:</label>
+                                <input type="text" id="addGoodsPrice" name="price" required value="<%=u_goods.price %>">
+                            </li>
+                            <li>
+                                <label for="addGoodsPostage">商品邮费:</label>
+                                <input type="text" id="addGoodsPostage" name="postage" value="<%=u_goods.postage %>">
+                            </li>
+                            <li>
+                                <label for="addGoodsDescribe">商品描述:</label>
+                                <textarea name="describe" id="addGoodsDescribe" style="width: 430px;height: 110px; resize: none;"><%=u_goods.describe %></textarea>
+                            </li>
+                            <li>
+                                <div class="input-group">
+                                    <input type="submit" class="btn" value="提交">
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- <div class="input-group">
                         <label for="addGoodsName">商品名称:</label>
                         <input type="text" id="addGoodsName" value="<%=u_goods.name %>" name="name"><br>
                         <label for="addGoodsImg">商品图片:</label>
                         <input type="file" id="addGoodsImg" name="img" style="display: inline-block;"><br>
+                        <img src="<%= u_goods.img %>" alt="" style="width:100px; margin-left: 65px;">
                         <label for="addGoodsPrice">商品价格:</label>
                         <input type="text" id="addGoodsPrice" value="<%=u_goods.price %>" name="price"><br>
                         <label for="addGoodsPostage">商品邮费:</label>
@@ -32,7 +74,7 @@
                     </div><br>
                     <div class="input-group">
                         <input type="submit" class="btn" value="提交修改">
-                    </div>
+                    </div> -->
                 </form>
             </div>
         </div>

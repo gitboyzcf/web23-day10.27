@@ -123,7 +123,7 @@
                                     <% for(let i=0; i<goods.length; i++){ %>
                                     <tr>
                                         <td><%= i>10?'0'+(i+1):'00'+(i+1) %></td>
-                                        <td><%= goods[i].img %></td>
+                                        <td><img src="<%= goods[i].img %>" style="width: 50px;" alt=""></td>
                                         <td><%= goods[i].name %></td>
                                         <td><%= goods[i].price %>元</td>
                                         <td><%= goods[i].postage %>元</td>
@@ -152,28 +152,51 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">增加商品</div>
                                 <div class="panel-body">
-                                    <form action="/admin/addGoods" method="POST" class="form-inline">
+                                    <form action="/admin/addGoods" method="POST" class="form-inline" enctype="multipart/form-data">
+                                        <!-- enctype 指定表单数据的编码类型
+                                            application/x-www-form-urlencoded  默认  username=llr&age=18
+                                            multipart/form-data  提交文件类型的数据
+                                            -->
                                         <div class="input-group">
-                                            <label for="addGoodsName">商品名称:</label>
-                                            <input type="text" id="addGoodsName" name="name" required><br>
-                                            <label for="cate_id">商品类别:</label>
-                                            <select name="cate_id" id="cate_id">
-                                                <option value="1">服装</option>
-                                                <option value="2">家电</option>
-                                                <option value="3">食品</option>
-                                                <option value="4">学习用品</option>
-                                            </select><br>
-                                            <label for="addGoodsImg">商品图片:</label>
-                                            <input type="file" id="addGoodsImg" name="img" style="display: inline-block;"><br>
-                                            <label for="addGoodsPrice">商品价格:</label>
-                                            <input type="text" id="addGoodsPrice" name="price" required><br>
-                                            <label for="addGoodsPostage">商品邮费:</label>
-                                            <input type="text" id="addGoodsPostage" name="postage"><br>
-                                            <label for="addGoodsDescribe">商品描述:</label>
-                                            <textarea name="describe" id="addGoodsDescribe" style="width: 430px;height: 110px; resize: none;"></textarea>
-                                        </div><br>
-                                        <div class="input-group">
-                                            <input type="submit" class="btn" value="提交">
+                                            <ul>
+                                                <li>
+                                                    <label for="addGoodsName">商品名称:</label>
+                                                    <input type="text" id="addGoodsName" name="name" required>
+                                                </li>
+                                                <li>
+                                                    <label for="cate_id">商品类别:</label>
+                                                    <select name="cate_id" id="cate_id">
+                                                        <option value="1">服装</option>
+                                                        <option value="2">家电</option>
+                                                        <option value="3">食品</option>
+                                                        <option value="4">学习用品</option>
+                                                    </select>
+                                                </li>
+                                                <li>
+                                                    <label for="addGoodsImg">商品图片:</label>
+                                                    <input type="file" id="addGoodsImg" name="img" style="display: inline-block;">
+                                                </li>
+                                                <li>
+                                                    <img src="" alt=""  style="width:100px; margin-left: 65px;" id="thumb">
+                                                </li>
+                                                <li>
+                                                    <label for="addGoodsPrice">商品价格:</label>
+                                                    <input type="text" id="addGoodsPrice" name="price" required>
+                                                </li>
+                                                <li>
+                                                    <label for="addGoodsPostage">商品邮费:</label>
+                                                    <input type="text" id="addGoodsPostage" name="postage">
+                                                </li>
+                                                <li>
+                                                    <label for="addGoodsDescribe">商品描述:</label>
+                                                    <textarea name="describe" id="addGoodsDescribe" style="width: 430px;height: 110px; resize: none;"></textarea>
+                                                </li>
+                                                <li>
+                                                    <div class="input-group">
+                                                        <input type="submit" class="btn" value="提交">
+                                                    </div>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </form>
                                 </div>
@@ -236,5 +259,25 @@
     <script src="/js/jquery-3.4.1.js"></script>
     <script src="/js/bootstrap.js"></script>
     <script src="/js/index.js"></script>
+    <script src="/ckeditor5/ckeditor.js"></script>
+    <script>
+        ClassicEditor.create(document.querySelector("#addGoodsDescribe"))//addGoodsDescribe多行文本上的id名
+
+        // js实现图片上传预览
+        let file = document.querySelector("input[type=file]");
+        let thumb = document.querySelector("#thumb");
+        // 监听文件内容改变
+        file.onchange = function(){
+            // 创建一个文件读取对象
+            let reader = new FileReader();
+            console.dir(this);
+            // 读取文件
+            reader.readAsDataURL(this.files[0]);
+            reader.onload = function(){
+                // 以Base64的方式输出
+                thumb.src = reader.result;
+            }
+        }
+    </script>
 </body>
 </html>

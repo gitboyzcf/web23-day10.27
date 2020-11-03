@@ -7,6 +7,9 @@ const addGoods = new mongoose.Schema({
         required:[true,"商品名不能为空"],
         trim:true
     }, //商品名字
+    cate_id:{
+        type:String
+    },
     img:{
         type:String
     }, //商品图片
